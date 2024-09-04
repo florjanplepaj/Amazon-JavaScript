@@ -104,6 +104,20 @@ link.addEventListener('click', ()=>{
 
 const container = document.querySelector(`.js-cart-item-container-${productId}`);
 container.remove();
+updateCartQuantityCheckout();
+
 });
+updateCartQuantityCheckout();
+
+function updateCartQuantityCheckout(){
+  let cartQuantity = 0;
+  cart.forEach((cartItem)=>{
+    cartQuantity += cartItem.quantity;
+
+  })
+  cartQuantity = cartQuantity + ' items'
+  document.querySelector('.js-cart-quantity-checkout').innerHTML = cartQuantity  ;
+    
+}
 
 });

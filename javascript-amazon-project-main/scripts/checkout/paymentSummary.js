@@ -5,6 +5,7 @@ import{formatCurrency} from '../utils/money.js'
 
 export function renderPaymentSummary(){
 
+  
   let productPriceCents = 0;
   let shipingPriceCents = 0;
   
@@ -23,14 +24,14 @@ const taxCents = totalBeforeTaxCents * 0.1;
 const totalCents = totalBeforeTaxCents + taxCents;
 
 
-
+//console.log(cart)
 const paymentSummaryHTML = `
 <div class="payment-summary-title">
         Order Summary
       </div>
 
       <div class="payment-summary-row">
-        <div>Items (3):</div>
+        <div class = "js-cart-quantity-payment">Items (3):</div>
         <div class="payment-summary-money">
         $${formatCurrency(productPriceCents)}
         </div>
@@ -62,4 +63,18 @@ const paymentSummaryHTML = `
       </button>
 `
 document.querySelector('.js-paymant-summary').innerHTML = paymentSummaryHTML;
+updateCartQuantityPayment();
 };
+
+function updateCartQuantityPayment(){
+  let cartQuantityPayment = 0;
+  cart.forEach((cartItem)=>{
+    cartQuantityPayment += cartItem.quantity;
+
+  })
+  cartQuantityPayment = `Items (${cartQuantityPayment}): `
+ 
+  document.querySelector('.js-cart-quantity-payment').innerHTML = cartQuantityPayment  ;
+    
+  
+}

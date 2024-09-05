@@ -1,4 +1,4 @@
-import { cart, removeForCart , updateQuantity} from "../data/cart.js";
+import { cart, removeForCart , updateQuantity,updateDeliveryOption} from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
@@ -91,24 +91,24 @@ function deleveryOptionHTML(matchingProduct,cartItem){
     const isChecked = deleveryOption.id === cartItem.deliveryOptionId;
     
 
-    html +=   `
-    
-     <div class="delivery-option">
-              <input type="radio"
-              ${isChecked ? 'checked' : ''}
-                class="delivery-option-input"
-                name="delivery-option-${matchingProduct.id}">
-              <div>
-                <div class="delivery-option-date">
-                  ${dateString}
-                </div>
-                <div class="delivery-option-price">
-                  ${priceString} Shipping
-               </div>
-             </div>
-      </div>
-    
-    `
+    html += `
+        <div class="delivery-option js-delivery-option"
+          data-product-id="${matchingProduct.id}"
+          data-delivery-option-id="${deleveryOption.id}">
+          <input type="radio"
+            ${isChecked ? 'checked' : ''}
+            class="delivery-option-input"
+            name="delivery-option-${matchingProduct.id}">
+          <div>
+            <div class="delivery-option-date">
+              ${dateString}
+            </div>
+            <div class="delivery-option-price">
+              ${priceString} Shipping
+            </div>
+          </div>
+        </div>
+      `
   })
   return html;
 }
@@ -183,4 +183,13 @@ function updateCartQuantityCheckout(){
   document.querySelector('.js-cart-quantity-checkout').innerHTML = cartQuantity  ;
     
 }
+
+document.querySelectorAll('.js-delivery-option')
+.forEach((element) => {
+  element.addEventListener('click', () => {
+    const {productId, deliveryOptionId} = element.dataset;
+    updateDeliveryOption(productId, deliveryOptionId);
+    
+  });
+});
 

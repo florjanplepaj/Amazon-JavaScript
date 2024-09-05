@@ -24,7 +24,7 @@ const taxCents = totalBeforeTaxCents * 0.1;
 const totalCents = totalBeforeTaxCents + taxCents;
 
 
-//console.log(cart)
+
 const paymentSummaryHTML = `
 <div class="payment-summary-title">
         Order Summary

@@ -93,3 +93,18 @@ export function updateDeliveryOption(productId, deliveryOptionId) {
 
   saveToStroage();
 }
+
+export function loadCart(fun){
+  const xht = new XMLHttpRequest();
+  xht.addEventListener('load', ()=>{
+    console.log(xht.response)
+    fun();
+    
+  })
+  xht.open('GET', 'https://supersimplebackend.dev/cart');
+  xht.send();
+
+  
+
+
+}

@@ -29,21 +29,32 @@ async function loadPage() {
     return;
   }
   let quantity;
+  let orderTime;
+  let deliveryTime;
+
   order.forEach((orderItem) => {
     if(orderItem.id === orderId){
+      orderTime = orderItem.orderTime;
       let productsOfOrder = orderItem.products
       productsOfOrder.forEach((product)=>{
         if(product.productId === productId){
             quantity = product.quantity
+            deliveryTime = product.estimatedDeliveryTime
+
+
+            
         }
         
       })
     }
       
   });
+  
  
+  
+  const deliveryDate = dayjs(deliveryTime).format('dddd, MMMM D');
+    
 
-  const deliveryDate = dayjs(productDetails.estimatedDeliveryTime).format('dddd, MMMM D');
 
   const trackingHTML = `
     <a class="back-to-orders-link link-primary" href="orders.html">
@@ -71,14 +82,35 @@ async function loadPage() {
     </div>
 
     <div class="progress-bar-container">
-      <div class="progress-bar"></div>
+      <div class="progress-bar js-calculate-progess"></div>
     </div>
   `;
-
-  // Insert the generated HTML into the DOM
   document.querySelector('.js-order-tracking').innerHTML = trackingHTML;
+   const barProgress =calculateProgress(deliveryTime,orderTime)
+  
+   const progressBar = document.querySelector('.progress-bar');
+// Set the width based on barProgress
+progressBar.style.width = `${barProgress}%`;
+
 }
 
-// Load the page and render the order tracking information
+function calculateProgress(deliveryDate, orderTime) {
+  // Convert deliveryDate and orderTime to Day.js objects
+  const deliveryDateObj = dayjs(deliveryDate);
+  const orderDateObj = dayjs(orderTime);
+  const today = dayjs();
+  
+
+  const differenceCurrentAndOrder = today.diff(orderDateObj, 'minute');
+  
+  const differenceDeliveryAndOrder = deliveryDateObj.diff(orderDateObj, 'minute');
+
+ 
+  const differenceComplete = ((differenceCurrentAndOrder / differenceDeliveryAndOrder) * 100);
+
+  return Math.min(Math.max(differenceComplete, 0), 100);
+}
+
+
 loadPage();
 

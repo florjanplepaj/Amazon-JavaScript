@@ -58,7 +58,7 @@ const paymentSummaryHTML = `
         <div class="payment-summary-money">$${formatCurrency(totalCents)}</div>
       </div>
 
-      <button class="place-order-button button-primary js-place-order">
+      <button class="place-order-button button-primary js-place-order" >
         Place your order
       </button>
 `
@@ -76,8 +76,9 @@ document.querySelector('.js-place-order').addEventListener('click', async ()=>{
         cart: cart
       })
     });
-  
+    
     const order = await response.json();
+    //console.log(button.dataset)
     addOrder(order)
   }
   catch(error){

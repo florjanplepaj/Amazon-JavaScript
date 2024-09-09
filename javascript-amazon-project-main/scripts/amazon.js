@@ -8,6 +8,7 @@ loadProducts(renderProductsGrid);
 
 
   let productsHTML = '';
+ 
 
   products.forEach((product) => {
     productsHTML +=  `
@@ -51,7 +52,7 @@ loadProducts(renderProductsGrid);
               ${product.extraInfoHtml()}
               <div class="product-spacer"></div>
     
-              <div class="added-to-cart">
+              <div class="added-to-cart js-added-to-cart">
                 <img src="images/icons/checkmark.png">
                 Added
               </div>
@@ -85,6 +86,7 @@ loadProducts(renderProductsGrid);
     const selectedQuantity =  Number(getSelectQunatity(productId))
     if(selectedQuantity){
       addToCart(productId,selectedQuantity);
+      addToCartMessage()
       updateCartQuantity();
     }
    
@@ -102,4 +104,20 @@ loadProducts(renderProductsGrid);
 
   const selectedValue = selectElement.value;
   return selectedValue;
+  }
+  
+  
+  let timeoutId;
+function addToCartMessage(){
+  const progressBar = document.querySelector('.js-added-to-cart');
+
+  if (timeoutId) {
+    clearTimeout(timeoutId);
+  }
+  progressBar.style.opacity = 1;
+
+  timeoutId = setTimeout(() => {
+    progressBar.style.opacity = 0;
+  }, 2000);
+
 }

@@ -34,7 +34,7 @@ loadProducts(renderProductsGrid);
               </div>
     
               <div class="product-quantity-container">
-                <select>
+                <select class = "quantity-value" data-product-id="${product.id}">
                   <option selected value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -82,10 +82,24 @@ loadProducts(renderProductsGrid);
   button.addEventListener('click', (() => {
     
     const productId = button.dataset.productId;
-
-    addToCart(productId);
-    updateCartQuantity();
+    const selectedQuantity =  Number(getSelectQunatity(productId))
+    if(selectedQuantity){
+      addToCart(productId,selectedQuantity);
+      updateCartQuantity();
+    }
+   
   }))
 
   })
   }
+  function getSelectQunatity(productId){
+    const selectElement = document.querySelector(`select[data-product-id="${productId}"]`);
+  
+  if (!selectElement) {
+    console.error(`Select element for product ${productId} not found`);
+    return null;
+  }
+
+  const selectedValue = selectElement.value;
+  return selectedValue;
+}

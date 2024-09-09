@@ -1,4 +1,4 @@
-import { cart, makeCartEmpty } from "../data/cart.js";
+import { addToCart, cart, makeCartEmpty } from "../data/cart.js";
 import { getDeliveryOption } from "../data/deleveryOption.js";
 import { getCartProduct, orders, findProductDetails } from "../data/orders.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
@@ -60,7 +60,7 @@ function renderOrderCheckout() {
             <div class="product-name">${productInfo.name}</div>
             <div class="product-delivery-date">Arriving on: ${deliverydateString}</div>
             <div class="product-quantity">Quantity: ${matchingOrder.quantity}</div>
-            <button class="buy-again-button button-primary">
+            <button class="buy-again-button button-primary js-buy-again-button " data-product-id="${productId}">
               <img class="buy-again-icon" src="images/icons/buy-again.png">
               <span class="buy-again-message">Buy it again</span>
             </button>
@@ -97,11 +97,14 @@ function renderOrderCheckout() {
       goToOrderTracking(orderId, productId);
     });
   });
+
+  buyAgainButton()
 }
 function goToOrderTracking(orderId, productId) {
   const url = `tracking.html?orderId=${orderId}&productId=${productId}`;
   window.location.href = url;
 }
+
 function updateCartQuantityCheckout(){
   let cartQuantityPayment = 0;
   cart.forEach((cartItem)=>{
@@ -113,4 +116,13 @@ function updateCartQuantityCheckout(){
   document.querySelector('.js-order-quantity-checkout').innerHTML = cartQuantityPayment  ;
     
   
+}
+function buyAgainButton(){
+  document.querySelectorAll('.js-buy-again-button').forEach((button)=>{
+    button.addEventListener('click',()=>{
+      const productId = button.dataset.productId
+      addToCart(productId)
+    })
+   
+  })
 }

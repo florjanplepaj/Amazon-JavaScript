@@ -49,6 +49,7 @@ function renderOrderCheckout() {
       const deliveryDate = dayjs(orderTimes);
       const deliverydateString = deliveryDate.format('MMMM D');
       const productInfo = getProduct(productId);
+      
 
       orderSummaryHTML += `
         <div class="order-details-grid">
@@ -65,24 +66,42 @@ function renderOrderCheckout() {
             </button>
           </div>
           <div class="product-actions">
-            <a href="tracking.html">
-              <button class="track-package-button button-secondary">Track package</button>
+            
+              <button class="track-package-button button-secondary js-track-package-button" data-order-id="${orderId}" data-product-id="${productInfo.id}">Track package</button>
+
             </a>
           </div>
         </div>
       `;
     });
 
+    
     // Close the order container after all products are added
     orderSummaryHTML += `</div>`;
   });
 
+  
+
+
   // Inject the complete order summary into the container
   document.querySelector('.order-summary-container').innerHTML = orderSummaryHTML;
 
-  updateCartQuantityCheckout()
+  updateCartQuantityCheckout();
+  document.querySelectorAll('.js-track-package-button').forEach((button) => {
+    button.addEventListener('click', () => {
+      // Corrected dataset property names
+      console.log(button.dataset)
+      const orderId = button.dataset.orderId;
+      const productId = button.dataset.productId;
+  
+      goToOrderTracking(orderId, productId);
+    });
+  });
 }
-
+function goToOrderTracking(orderId, productId) {
+  const url = `tracking.html?orderId=${orderId}&productId=${productId}`;
+  window.location.href = url;
+}
 function updateCartQuantityCheckout(){
   let cartQuantityPayment = 0;
   cart.forEach((cartItem)=>{

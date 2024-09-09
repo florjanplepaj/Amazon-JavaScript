@@ -55,6 +55,13 @@ const newCart = [];
  cart = newCart;
  saveToStroage();
 }
+
+export function makeCartEmpty(){
+  const newCart = [];
+   
+   cart = newCart;
+   saveToStroage();
+  }
 export function updateQuantity(productId, newQuantity) {
   let matchingItem;
 

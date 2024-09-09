@@ -1,4 +1,4 @@
-import { cart } from "../data/cart.js";
+import { cart, makeCartEmpty } from "../data/cart.js";
 import { getDeliveryOption } from "../data/deleveryOption.js";
 import { getCartProduct, orders, findProductDetails } from "../data/orders.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
@@ -10,6 +10,7 @@ let orderSummaryHTML = '';
 loadProducts(renderOrderCheckout);
 
 function renderOrderCheckout() {
+  makeCartEmpty();
   orders.forEach((orderItem) => {
     const orderId = orderItem.id;
     const products = orderItem.products;
@@ -40,7 +41,7 @@ function renderOrderCheckout() {
         </div>
     `;
 
-    // Add product details under the order header
+   
     products.forEach((productItem) => {
       const productId = productItem.productId;
       const matchingOrder = getCartProduct(productId);
@@ -78,4 +79,19 @@ function renderOrderCheckout() {
 
   // Inject the complete order summary into the container
   document.querySelector('.order-summary-container').innerHTML = orderSummaryHTML;
+
+  updateCartQuantityCheckout()
+}
+
+function updateCartQuantityCheckout(){
+  let cartQuantityPayment = 0;
+  cart.forEach((cartItem)=>{
+    cartQuantityPayment += cartItem.quantity;
+
+  })
+  
+ 
+  document.querySelector('.js-order-quantity-checkout').innerHTML = cartQuantityPayment  ;
+    
+  
 }
